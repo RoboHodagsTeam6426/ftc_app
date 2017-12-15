@@ -110,9 +110,13 @@ public class TestAuto extends LinearOpMode {
         //run methods for the program here.(what you want the robot to do)
         //ballServo.setPosition(1);
         rangeForwardU(33, 0, -0.5);
-        turnAbsolute(90, 0.5);
-        rangeForwardU(15, 90, -0.4);
-        turnAbsolute(160, 0.5);
+        turnAbsolute(90, 0.7);
+        rangeForwardU(20, 90, -0.4);
+        turnAbsolute(160, 0.8);
+        leftDriveMotor.setPower(-0.5);
+        rightDriveMotor.setPower(0.5);
+        waitFunct(500);
+        stopDriving();
         //colorSensorB();
 
     }
@@ -133,7 +137,7 @@ public class TestAuto extends LinearOpMode {
 
             //gets the current heading related to the target heading and if it is over the leniency (the number) it does the loop
             //sets the motor power proportional to far away from the heading it is, the farther away the faster it turns
-            while ((Math.abs(heading - target)) > 1) {
+            while ((Math.abs(heading - target)) > 5) {
 
                 heading = gyro.getHeading();
 
@@ -157,8 +161,8 @@ public class TestAuto extends LinearOpMode {
                 while (((heading - target) > -180) && ((heading - target) < 0)) {
                     heading = gyro.getHeading();
 
-                    leftPower = (power + ((heading - target) * -1)) / 90;
-                    rightPower = (power +((heading - target) * -1)) / 90;
+                    leftPower = (power + ((heading - target) * -1)) / 80;
+                    rightPower = (power + ((heading - target) * -1)) / 80;
 
                     leftPower = Range.clip(leftPower, -1, 1);
                     rightPower = Range.clip(rightPower, -1, 1);
@@ -169,8 +173,8 @@ public class TestAuto extends LinearOpMode {
                 while ((heading -target) <= -180) {
                     heading = gyro.getHeading();
 
-                    leftPower = (power + ((heading - target) * -1)) / 90;
-                    rightPower = (power + ((heading - target) * -1)) / 90;
+                    leftPower = (power + ((heading - target) * -1)) / 80;
+                    rightPower = (power + ((heading - target) * -1)) / 80;
 
                     leftPower = Range.clip(leftPower, -1, 1);
                     rightPower = Range.clip(rightPower, -1, 1);
@@ -181,8 +185,8 @@ public class TestAuto extends LinearOpMode {
                 while (((heading - target) < 180) && ((heading - target) > 0)) {
                     heading = gyro.getHeading();
 
-                    leftPower = (power + (heading - target)) / 90;
-                    rightPower = (power + (heading - target)) / 90;
+                    leftPower = (power + (heading - target)) / 80;
+                    rightPower = (power + (heading - target)) / 80;
 
                     leftPower = Range.clip(leftPower, -1, 1);
                     rightPower = Range.clip(rightPower, -1, 1);
@@ -193,8 +197,8 @@ public class TestAuto extends LinearOpMode {
                 while ((heading -target) >= 180) {
                     heading = gyro.getHeading();
 
-                    leftPower = (power + (heading - target)) / 90;
-                    rightPower = (power + (heading - target)) / 90;
+                    leftPower = (power + (heading - target)) / 80;
+                    rightPower = (power + (heading - target)) / 80;
 
                     leftPower = Range.clip(leftPower, -1, 1);
                     rightPower = Range.clip(rightPower, -1, 1);
@@ -254,8 +258,8 @@ public class TestAuto extends LinearOpMode {
                 //proportionalizes both sides so that it turns at different rates proportional to how
                 //far away from the target it is
                 if ((heading - target) > 5 && (heading - target) <= 180) {
-                    leftSpeed = (power + (heading - target)) / 90;
-                    rightSpeed = (power + (heading - target)) / 90;
+                    leftSpeed = (power + (heading - target)) / 80;
+                    rightSpeed = (power + (heading - target)) / 80;
 
                     leftSpeed = Range.clip(leftSpeed, -1, 1);
                     rightSpeed = Range.clip(rightSpeed, -1, 1);
@@ -264,8 +268,8 @@ public class TestAuto extends LinearOpMode {
                     rightDriveMotor.setPower(rightSpeed);
                 }
                 if ((heading - target) < 355 && (heading - target) >180) {
-                    leftSpeed = (power + (((heading - 360) * -1) - target)) / 90;
-                    rightSpeed = (power + (((heading - 360) * -1) - target)) / 90;
+                    leftSpeed = (power + (((heading - 360) * -1) - target)) / 80;
+                    rightSpeed = (power + (((heading - 360) * -1) - target)) / 80;
 
                     leftSpeed = Range.clip(leftSpeed, -1, 1);
                     rightSpeed = Range.clip(rightSpeed, -1, 1);
