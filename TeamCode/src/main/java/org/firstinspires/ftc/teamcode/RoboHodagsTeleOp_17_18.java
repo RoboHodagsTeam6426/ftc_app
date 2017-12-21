@@ -18,19 +18,18 @@ public class RoboHodagsTeleOp_17_18 extends LinearOpMode{
     private DcMotor rightDriveMotor;
     private DcMotor topArmMotor;
     private DcMotor bottomArmMotor;
+    private DcMotor winchMotor;
+    private DcMotor scissorMotor;
 
-    private Servo rightArmServo;
-    private Servo leftArmServo;
+    private CRServo rightArmServo;
+    private CRServo leftArmServo;
 
-    private CRServo winchServo;
-    private CRServo scissorServo;
-
-    double rightArmServoClosed = 0;
-    double leftArmServoClosed = 1;
-    double rightArmServoPart = 0.1;
-    double leftArmServoPart = 0.9;
-    double rightArmServoOpen = 0.3;
-    double leftArmServoOpen = 0.7;
+    //double rightArmServoClosed = 0;
+    //double leftArmServoClosed = 1;
+    //double rightArmServoPart = 0.1;
+    //double leftArmServoPart = 0.9;
+    //double rightArmServoOpen = 0.3;
+    //double leftArmServoOpen = 0.7;
 
     double trimValueR = 1;
     double trimValueL = 1;
@@ -49,11 +48,11 @@ public class RoboHodagsTeleOp_17_18 extends LinearOpMode{
         topArmMotor = hardwareMap.dcMotor.get("topArmMotor");
         bottomArmMotor = hardwareMap.dcMotor.get("bottomArmMotor");
 
-        rightArmServo = hardwareMap.servo.get("rightArmServo");
-        leftArmServo = hardwareMap.servo.get("leftArmServo");
+        rightArmServo = hardwareMap.crservo.get("rightArmServo");
+        leftArmServo = hardwareMap.crservo.get("leftArmServo");
 
-        winchServo = hardwareMap.crservo.get("winchServo");
-        scissorServo = hardwareMap.crservo.get("scissorServo");
+        winchMotor = hardwareMap.dcMotor.get("winchMotor");
+        scissorMotor = hardwareMap.dcMotor.get("scissorMotor");
 
         leftDriveMotor.setDirection(DcMotor.Direction.REVERSE);
 
@@ -67,24 +66,27 @@ public class RoboHodagsTeleOp_17_18 extends LinearOpMode{
             leftDriveMotor.setPower(leftDrivePower * drivePower);
             rightDriveMotor.setPower(rightDrivePower * drivePower);
 
-            topArmMotor.setPower(gamepad2.left_stick_y/5);
-            bottomArmMotor.setPower(gamepad2.left_stick_y/5);
+            topArmMotor.setPower(gamepad2.left_stick_y/4);
+            bottomArmMotor.setPower(gamepad2.left_stick_y/4);
 
-            scissorServo.setPower(gamepad2.right_stick_y);
+            leftArmServo.setPower(gamepad2.right_stick_y);
+            rightArmServo.setPower(-gamepad2.right_stick_y);
+
+            scissorMotor.setPower(gamepad2.right_stick_x);
 
             while (gamepad2.dpad_up) {
-                winchServo.setPower(-1);
+                winchMotor.setPower(-1);
             }
 
             while (gamepad2.dpad_down) {
-                winchServo.setPower(1);
+                winchMotor.setPower(1);
             }
 
             while (gamepad2.dpad_left) {
-                winchServo.setPower(0);
+                winchMotor.setPower(0.1);
             }
 
-            if (gamepad2.x) {
+            /*if (gamepad2.x) {
                 leftArmServo.setPosition(leftArmServoOpen);
                 rightArmServo.setPosition(rightArmServoOpen);
             }
@@ -97,7 +99,7 @@ public class RoboHodagsTeleOp_17_18 extends LinearOpMode{
             if (gamepad2.y) {
                 leftArmServo.setPosition(leftArmServoPart);
                 rightArmServo.setPosition(rightArmServoPart);
-            }
+            }*/
 
             if (gamepad1.dpad_left) {
                 drivePower = 1;
