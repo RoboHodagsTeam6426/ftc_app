@@ -56,6 +56,9 @@ public class RoboHodagsTeleOp_17_18 extends LinearOpMode{
 
         leftDriveMotor.setDirection(DcMotor.Direction.REVERSE);
 
+        leftArmServo.setPower(0);
+        rightArmServo.setPower(0);
+
         waitForStart();
 
         while (opModeIsActive()) {
@@ -72,18 +75,16 @@ public class RoboHodagsTeleOp_17_18 extends LinearOpMode{
             leftArmServo.setPower(gamepad2.right_stick_y);
             rightArmServo.setPower(-gamepad2.right_stick_y);
 
-            scissorMotor.setPower(gamepad2.right_stick_x);
+            scissorMotor.setPower(gamepad2.right_stick_x/10);
 
-            while (gamepad2.dpad_up) {
-                winchMotor.setPower(-1);
-            }
-
-            while (gamepad2.dpad_down) {
-                winchMotor.setPower(1);
-            }
-
-            while (gamepad2.dpad_left) {
-                winchMotor.setPower(0.1);
+            if (gamepad2.dpad_up) {
+                winchMotor.setPower(-0.5);
+            }else if(gamepad2.dpad_down) {
+                winchMotor.setPower(0.5);
+            }else if(gamepad2.dpad_left) {
+                winchMotor.setPower(0.03);
+            }else {
+                winchMotor.setPower(0);
             }
 
             /*if (gamepad2.x) {
