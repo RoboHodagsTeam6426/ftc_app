@@ -4,7 +4,6 @@ import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.GyroSensor;
@@ -16,9 +15,9 @@ import com.qualcomm.robotcore.util.Range;
  * Created by bachmhun on 1/4/2017.
  */
 //sets what type of program and the name that will be displayed on the app
-@Autonomous(name = "TestAuto")
+@Autonomous(name = "RoboHodagsAutoStRed_17_18")
 //this makes a class called v that is displayed in the android tab and extends another class with more imports and set up to help you.
-public class TestAuto extends LinearOpMode {
+public class RoboHodagsAutoStRed_17_18 extends LinearOpMode {
 
     //declare motor names in a private class
     private DcMotor leftDriveMotor;
@@ -32,6 +31,8 @@ public class TestAuto extends LinearOpMode {
 
     int elapsedTime = 0;
     boolean timeElasped = false;
+
+    boolean blueBall = false;
 
     //private CRServo servoLeft;
 
@@ -108,26 +109,34 @@ public class TestAuto extends LinearOpMode {
         waitForStart();
 
         //run methods for the program here.(what you want the robot to do)
+        ballServo.setPosition(0.4);
         topArmMotor.setPower(-0.1);
         bottomArmMotor.setPower(-0.1);
-        waitFunct(150);
-        topArmMotor.setPower(-0.02);
-        bottomArmMotor.setPower(-0.02);
+        waitFunct(300);
+        topArmMotor.setPower(-0.03);
+        bottomArmMotor.setPower(-0.03);
         waitFunct(200);
         leftArmServo.setPosition(0.5);
         rightArmServo.setPosition(0.5);
         waitFunct(500);
-        topArmMotor.setPower(-0.1);
-        bottomArmMotor.setPower(-0.1);
-        waitFunct(1500);
-        topArmMotor.setPower(-0.02);
-        bottomArmMotor.setPower(-0.02);
+        topArmMotor.setPower(-0.2);
+        bottomArmMotor.setPower(-0.2);
+        waitFunct(850);
+        topArmMotor.setPower(-0.04);
+        bottomArmMotor.setPower(-0.04);
         waitFunct(100);
-        leftDriveMotor.setPower(0.4);
+        leftDriveMotor.setPower(0.3);
         rightDriveMotor.setPower(-0.3);
-        waitFunct(600);
+        waitFunct(700);
         stopDriving();
+        waitFunct(500);
         ballServo.setPosition(1);
+        waitFunct(1000);
+        colorSensorR();
+        waitFunct(100);
+        ballServo.setPosition(0.4);
+        waitFunct(1000);
+        afterBallMovement();
 
 
     }
@@ -229,27 +238,31 @@ public class TestAuto extends LinearOpMode {
             rightDriveMotor.setPower(0);
         }
 
-    public void waitFunct(int milliSec) {
-        ElapsedTime timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
-        while (opModeIsActive() && timer.time() < milliSec) {
+        public void waitFunct(int milliSec) {
+            ElapsedTime timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
+            while (opModeIsActive() && timer.time() < milliSec) {
             idle();
+            }
         }
-    }
-        //checks the ball for blue
-        public void colorSensorB(double turnSpeed, double power) throws InterruptedException {
-            //if it is it runs hit the button
-            //checks for red and blue if neither present waits
-            if (colorSensor.blue() == 0 && colorSensor.red() == 0) {
-                waitFunct(1000);
+        //checks the ball for red
+        public void colorSensorR() throws InterruptedException {
+            //checks for red if red drives forward
+            if (colorSensor.red() > 0) {
+                leftDriveMotor.setPower(-0.5);
+                rightDriveMotor.setPower(0.5);
+                waitFunct(400);
+                stopDriving();
+                blueBall = false;
+                waitFunct(100);
             }
-            //checks for red if red hits button
-            if (colorSensor.blue() >= 1) {
-                turnAbsolute(90, power);
-            }
-            //if it gets blue it readjusts so its on the other color of the beacon
-            else {
-                turnAbsolute(100, power);
-                ballServo.setPosition(0);
+            //if it gets blue it goes other direction
+            if (colorSensor.blue() > 0) {
+                leftDriveMotor.setPower(0.3);
+                rightDriveMotor.setPower(-0.3);
+                waitFunct(400);
+                stopDriving();
+                blueBall = true;
+                waitFunct(100);
             }
             stopDriving();
             return;
@@ -411,5 +424,18 @@ public class TestAuto extends LinearOpMode {
         }
         stopDriving();
         return;
+    }
+    public void afterBallMovement() throws InterruptedException {
+        if (blueBall = false) {
+            leftDriveMotor.setPower(-0.3);
+            rightDriveMotor.setPower(0.3);
+            waitFunct(500);
+            stopDriving();
+        }else if(blueBall = true && blueBall != false) {
+            leftDriveMotor.setPower(-1);
+            rightDriveMotor.setPower(1);
+            waitFunct(2000);
+            stopDriving();
+        }
     }
 }

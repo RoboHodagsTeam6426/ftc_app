@@ -63,6 +63,8 @@ public class RoboHodagsTeleOp_17_18 extends LinearOpMode{
 
         waitForStart();
 
+        ballServo.setPosition(0);
+
         while (opModeIsActive()) {
 
             leftDrivePower = Range.clip(gamepad1.left_stick_y, -trimValueL, trimValueL);
@@ -78,6 +80,15 @@ public class RoboHodagsTeleOp_17_18 extends LinearOpMode{
             //rightArmServo.setPower(gamepad2.right_stick_y);
 
             scissorMotor.setPower(gamepad2.right_stick_y/10);
+
+            if (gamepad2.right_bumper) {
+                topArmMotor.setPower(-0.03);
+                bottomArmMotor.setPower(-0.03);
+            }
+
+            if (gamepad2.dpad_right) {
+                ballServo.setPosition(0.4);
+            }
 
             if (gamepad2.dpad_up) {
                 winchMotor.setPower(-0.5);
