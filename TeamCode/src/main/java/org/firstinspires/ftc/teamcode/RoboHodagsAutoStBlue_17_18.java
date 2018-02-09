@@ -15,9 +15,9 @@ import com.qualcomm.robotcore.util.Range;
  * Created by bachmhun on 1/4/2017.
  */
 //sets what type of program and the name that will be displayed on the app
-@Autonomous(name = "RoboHodagsAutoStRed_17_18")
+@Autonomous(name = "RoboHodagsAutoStBlue_17_18")
 //this makes a class called v that is displayed in the android tab and extends another class with more imports and set up to help you.
-public class RoboHodagsAutoStRed_17_18 extends LinearOpMode {
+public class RoboHodagsAutoStBlue_17_18 extends LinearOpMode {
 
     //declare motor names in a private class
     private DcMotor leftDriveMotor;
@@ -157,6 +157,8 @@ public class RoboHodagsAutoStRed_17_18 extends LinearOpMode {
             //gets current heading
             int heading = gyro.getHeading();
 
+            telemetry.addData("heading", gyro.getHeading());
+
             double calcTurnSpeed = 0.0;
 
             //gets the current heading related to the target heading and if it is over the leniency (the number) it does the loop
@@ -164,8 +166,6 @@ public class RoboHodagsAutoStRed_17_18 extends LinearOpMode {
             while ((Math.abs(heading - target)) > 5) {
 
                 heading = gyro.getHeading();
-
-                telemetry.addData("heading", gyro.getHeading());
 
                 double leftPower;
                 double rightPower;
@@ -254,7 +254,7 @@ public class RoboHodagsAutoStRed_17_18 extends LinearOpMode {
         //checks the ball for red
         public void colorSensorR() throws InterruptedException {
             //checks for red if red drives forward
-            if (colorSensor.blue() > 0) {
+            if (colorSensor.red() > 0) {
                 leftDriveMotor.setPower(-0.5);
                 rightDriveMotor.setPower(0.5);
                 waitFunct(400);
@@ -263,7 +263,7 @@ public class RoboHodagsAutoStRed_17_18 extends LinearOpMode {
                 waitFunct(100);
             }
             //if it gets blue it goes other direction
-            if (colorSensor.red() > 0) {
+            if (colorSensor.blue() > 0) {
                 leftDriveMotor.setPower(0.3);
                 rightDriveMotor.setPower(-0.3);
                 waitFunct(400);
@@ -277,7 +277,7 @@ public class RoboHodagsAutoStRed_17_18 extends LinearOpMode {
                 waitFunct(500);
                 leftDriveMotor.setPower(-0.5);
                 rightDriveMotor.setPower(0.5);
-                waitFunct(1500);
+                waitFunct(1000);
                 stopDriving();
             }
             stopDriving();

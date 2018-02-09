@@ -24,6 +24,7 @@ public class RoboHodagsTeleOp_17_18 extends LinearOpMode{
     private Servo rightArmServo;
     private Servo leftArmServo;
     private Servo ballServo;
+    private Servo grabServo;
 
     double rightArmServoClosed = 0.5;
     double leftArmServoClosed = 0.5;
@@ -48,13 +49,14 @@ public class RoboHodagsTeleOp_17_18 extends LinearOpMode{
         rightDriveMotor = hardwareMap.dcMotor.get("rightDriveMotor");
         topArmMotor = hardwareMap.dcMotor.get("topArmMotor");
         bottomArmMotor = hardwareMap.dcMotor.get("bottomArmMotor");
+        winchMotor = hardwareMap.dcMotor.get("winchMotor");
+        scissorMotor = hardwareMap.dcMotor.get("scissorMotor");
 
         rightArmServo = hardwareMap.servo.get("rightArmServo");
         leftArmServo = hardwareMap.servo.get("leftArmServo");
         ballServo = hardwareMap.servo.get("ballServo");
+        grabServo = hardwareMap.servo.get("grabServo");
 
-        winchMotor = hardwareMap.dcMotor.get("winchMotor");
-        scissorMotor = hardwareMap.dcMotor.get("scissorMotor");
 
         leftDriveMotor.setDirection(DcMotor.Direction.REVERSE);
 
@@ -73,29 +75,47 @@ public class RoboHodagsTeleOp_17_18 extends LinearOpMode{
             leftDriveMotor.setPower(leftDrivePower * drivePower);
             rightDriveMotor.setPower(rightDrivePower * drivePower);
 
-            topArmMotor.setPower(gamepad2.left_stick_y/4);
-            bottomArmMotor.setPower(gamepad2.left_stick_y/4);
+            //topArmMotor.setPower(gamepad2.left_stick_y/4);
+            //bottomArmMotor.setPower(gamepad2.left_stick_y/4);
 
-            //leftArmServo.setPower(-gamepad2.right_stick_y);
-            //rightArmServo.setPower(gamepad2.right_stick_y);
-
-            scissorMotor.setPower(gamepad2.right_stick_y/10);
-
-            if (gamepad2.right_bumper) {
-                topArmMotor.setPower(-0.03);
-                bottomArmMotor.setPower(-0.03);
+            if (gamepad2.left_stick_y < 0) {
+                topArmMotor.setPower(gamepad2.left_stick_y/4);
+                bottomArmMotor.setPower(gamepad2.left_stick_y/4);
+            }else if (gamepad2.left_stick_y > 0) {
+                topArmMotor.setPower(gamepad2.left_stick_y/20);
+                bottomArmMotor.setPower(gamepad2.left_stick_y/20);
+            } else {
+                topArmMotor.setPower(-0.04);
+                bottomArmMotor.setPower(-0.04);
             }
 
-            if (gamepad2.dpad_right) {
+            scissorMotor.setPower(gamepad2.right_stick_y/2);
+
+            if (gamepad2.right_bumper) {
+                topArmMotor.setPower(-0.05);
+                bottomArmMotor.setPower(-0.05);
+            }
+
+            if (gamepad2.left_bumper) {
                 ballServo.setPosition(0.4);
             }
 
-            if (gamepad2.dpad_up) {
+            if (gamepad1.left_bumper) {
+                grabServo.setPosition(0);
+            }
+
+            if (gamepad1.right_bumper) {
+                grabServo.setPosition(0.5);
+            }
+
+            if (gamepad2.dpad_down) {
                 winchMotor.setPower(-0.5);
-            }else if(gamepad2.dpad_down) {
+            }else if(gamepad2.dpad_up) {
                 winchMotor.setPower(0.5);
             }else if(gamepad2.dpad_left) {
                 winchMotor.setPower(0.04);
+            }else if (gamepad2.dpad_right) {
+                winchMotor.setPower(-0.05);
             }else {
                 winchMotor.setPower(0);
             }
